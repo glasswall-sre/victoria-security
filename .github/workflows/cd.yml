@@ -1,0 +1,36 @@
+name: CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies using pipenv
+      run: |
+        python -m pip install --upgrade pip pipenv
+        pipenv install --dev
+        
+    - name: Serverless install python-requirements plugin
+      uses: serverless/github-action@master
+      with:
+        args: plugin install --name serverless-python-requirements    
+    
+    - name: Serverless Deploy to AWS
+      uses: jackdcasey/github-action@python3.8-nodejs13
+      with:
+        args: deploy --stage dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.VICTORIA_SECURITY_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.VICTORIA_SECURITY_AWS_SECRET_ACCESS_KEY }}
