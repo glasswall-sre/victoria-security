@@ -1,12 +1,5 @@
 
 service: victoria-authentication
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
@@ -27,19 +20,6 @@ provider:
       Action: "secretsmanager:GetSecretValue"
       Resource: "arn:aws:secretsmanager:*:*:secret:victoria-security-secrets-hPswIu"
 
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.py
-#    - exclude-me-dir/**
-
 functions:
   authorisor:
     handler: lambda_function.lambda_handler
@@ -47,10 +27,6 @@ functions:
       - http:
           path: authenticate
           method: post
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
 
 resources:
   Resources:
