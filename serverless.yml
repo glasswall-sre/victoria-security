@@ -1,0 +1,72 @@
+
+service: victoria-authentication
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: eu-west-2
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "dynamodb:Query"
+      Resource: "arn:aws:dynamodb:*:*:table/VictoriaMemberAccepter"
+    - Effect: "Allow"
+      Action: "dynamodb:Query"
+      Resource: "arn:aws:dynamodb:*:*:table/VictoriaAuditTrail"
+    - Effect: "Allow"
+      Action: "dynamodb:PutItem"
+      Resource: "arn:aws:dynamodb:*:*:table/VictoriaAuditTrail"
+    - Effect: "Allow"
+      Action: "secretsmanager:GetSecretValue"
+      Resource: "arn:aws:secretsmanager:*:*:secret:victoria-security-secrets-hPswIu"
+
+functions:
+  authorisor:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: authenticate
+          method: post
+
+resources:
+  Resources:
+
+    memberTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: VictoriaMemberAccepter
+        AttributeDefinitions:
+          - AttributeName: member_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: member_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    auditTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: VictoriaAuditTrail
+        AttributeDefinitions:
+          - AttributeName: member_id
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: member_id
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
