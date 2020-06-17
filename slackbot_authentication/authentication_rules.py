@@ -6,6 +6,21 @@ from typing import Dict
 class AuthenticationRules:
     @staticmethod
     def run(message, slack_email : str, secrets : Dict) -> Dict:
+        """Run rules composed to authenticate the target member can proceed
+
+        Args:
+            message: SlackMessageEvent
+            slack_email: Slack member email address.
+            secrets: The secrets read from secrets.get_secrets()
+
+        Returns:
+            {
+                statusCode: int,
+                body: str
+            }
+            statusCode 200 when authentication is successful
+            statusCode not 200 when and issue, see body for details.
+        """
         # Verify Slack Token is Valid and existant in request
         if not slack_utils.is_valid_slack_verification_token(message.token, secrets):
             return {

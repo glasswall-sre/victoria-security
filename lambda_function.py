@@ -11,6 +11,18 @@ import requests
 from typing import Dict, List
 
 def call_victoria(shlex : List, secrets : Dict) -> Dict:
+    """Make a POST request to V.I.C.T.O.R.I.A
+
+    Args:
+        shlex: A shlex list of commands to pass into Victoria.
+        secrets: The secrets read from secrets.get_secrets()
+
+    Returns:
+        { 
+            statusCode: int, 
+            body: str
+        }
+    """
     url = secrets["VICTORIA_URL"]
     data = {
         'args': shlex
@@ -22,6 +34,23 @@ def call_victoria(shlex : List, secrets : Dict) -> Dict:
     }
 
 def request_validation(event, event_content : Dict, secrets : Dict) -> Dict:
+    """Validate the request from API Gateway to Lambda in production.
+    Function will ensure any retrys are responded to as soon as possible with 200
+    otherwise 3 retrys happen and will run the lambda to completion 4 times.
+
+    Args:
+        event: event from API Gateway
+        event_content: event body value
+        secrets: The secrets read from secrets.get_secrets()
+
+    Returns:
+        { 
+            statusCode: int, 
+            body: str
+        }
+        statusCode 200 should be returned immediately to avoid more retrys.
+        statusCode 100 should allow continuing of execution.
+    """
     # Don't Accept Retrys
     if "X-Slack-Retry-Num" in event.get("headers"):
         return { 'statusCode': 200, 'body': "OK" }
