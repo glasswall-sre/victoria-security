@@ -1,5 +1,9 @@
+<div align="center" style="text-align:center">
+  
 # victoria-security
 A Slack interface and security layer into Victoria
+
+</div>
 
 # Motivation
 To combine the technologies of:
