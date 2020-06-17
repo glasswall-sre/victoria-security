@@ -46,7 +46,7 @@ import lambda_function
 event = {
     "headers" : {},
     "body" : """{
-        "token":<token>,
+        "token": <token>,
         "event" : {
             "user" : <member_id>,
             "team" : <team_id>,
