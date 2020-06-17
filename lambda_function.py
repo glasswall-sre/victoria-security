@@ -1,7 +1,7 @@
 import json
 
 from slack import WebClient
-from slackbot_authentication.authentication_rules import AuthenticationRules
+from slackbot_authentication.authentication_rules import run_authentication_rules
 import slackbot_authentication.slack_utils as slack_utils
 from slackbot_authentication.secrets import get_secret
 from slackbot_authentication.audit_log import AuditLog
@@ -84,7 +84,7 @@ def lambda_handler(event, context):
     slack_email = slack_utils.get_email(slack_client, message.member_id)
 
     # Authenticate, If fails returns message
-    response = AuthenticationRules.run(message, slack_email, secrets)
+    response = run_authentication_rules(message, slack_email, secrets)
     if response['statusCode'] != 200:
         slack_client.chat_postMessage(channel=message.channel, text=response['body'])
         return {
