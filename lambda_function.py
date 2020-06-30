@@ -113,7 +113,7 @@ def lambda_handler(event, context):
         slack_client.chat_postMessage(channel=message.channel, text=response['body'])
 
         # Audit Response
-        response = audit.insert_response_to_audit_log(message.member_id, response)
+        response = audit.insert_response_to_audit_log(message, response)
         if response['statusCode'] != 200:
             return {
                 'statusCode' : 502,

@@ -9,11 +9,11 @@ class AuditLog:
         dynamodb = boto3.resource('dynamodb')
         self.table = dynamodb.Table(AUDIT_DB)
 
-    def insert_request_to_audit_log(self, member_id : str, command : str) -> Dict:
+    def insert_request_to_audit_log(self, message_event : SlackMessageEvent, command : str) -> Dict:
         """Insert the Request made into the audit log
 
         Args:
-            member_id: slack member id who made request
+            message_event: message event object derived from slack event
             command: the text from the slack message to be logged for auditing
 
         Returns:
@@ -26,7 +26,7 @@ class AuditLog:
         """
         response = self.table.put_item(
             Item={
-                'member_id' : member_id,
+                'member_id' : message_event.member_id,
                 'timestamp' : f'{datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
                 'command' : command
             }
