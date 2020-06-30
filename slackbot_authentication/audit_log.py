@@ -40,7 +40,7 @@ class AuditLog:
         """Insert the Response from Victoria into the audit log
 
         Args:
-            member_id: slack member id who made request
+            message_event: message event object derived from slack event
             response: the text from victoria
 
         Returns:
