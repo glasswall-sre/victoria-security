@@ -1,6 +1,7 @@
 import datetime
 import boto3
 from typing import Dict
+from slack_message_event import SlackMessageEvent
 AUDIT_DB = 'VictoriaAuditTrail'
 
 class AuditLog:
@@ -35,7 +36,7 @@ class AuditLog:
             "body": ""
         }
 
-    def insert_response_to_audit_log(self, member_id : str, response : Dict) -> Dict:
+    def insert_response_to_audit_log(self, message_event : SlackMessageEvent, response : Dict) -> Dict:
         """Insert the Response from Victoria into the audit log
 
         Args:
@@ -52,7 +53,8 @@ class AuditLog:
         """
         response = self.table.put_item(
             Item={
-                'member_id' : member_id,
+                'member_id' : message_event.member_id,
+                'channel_id' : message_event.channel,
                 'timestamp' : f'{datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
                 'response_code' : response['statusCode'],
                 'response_text' : response['body']
