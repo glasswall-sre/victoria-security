@@ -1,7 +1,7 @@
 import datetime
 import boto3
 from typing import Dict
-from slack_message_event import SlackMessageEvent
+from slackbot_authentication.slack_message_event import SlackMessageEvent
 AUDIT_DB = 'VictoriaAuditTrail'
 
 class AuditLog:
