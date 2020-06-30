@@ -100,7 +100,7 @@ def lambda_handler(event, context):
     audit = AuditLog()
 
     # Add to Audit Log
-    response = audit.insert_request_to_audit_log(message.member_id, text)
+    response = audit.insert_request_to_audit_log(message, text)
     if response['statusCode'] != 200:
         return {
             'statusCode': 502,
