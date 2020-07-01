@@ -1,3 +1,4 @@
+  
 name: CD
 
 on:
@@ -16,24 +17,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-        
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12'
 
     - name: Install dependencies using pipenv
       run: |
         python -m pip install --upgrade pip pipenv
         pipenv install --dev
-
-    - name: Change Dir
-      run: cd ./deadletter_listener/
-
-    - name: Install Serverless
-      run: npm install -g serverless
         
     - name: Serverless install python-requirements plugin
-      run: serverless plugin install --name serverless-python-requirements    
+      uses: serverless/github-action@master
+      with:
+        args: plugin install --name serverless-python-requirements    
     
     - name: Serverless Deploy to AWS
       uses: jackdcasey/github-action@python3.8-nodejs13
