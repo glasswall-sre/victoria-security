@@ -27,13 +27,13 @@ jobs:
         python -m pip install --upgrade pip pipenv
         pipenv install --dev
         
-    - name: Lint with pylint
-      run: |
-        pipenv run pylint nsg_checker --disable="C,W,R"
+#     - name: Lint with pylint
+#       run: |
+#         pipenv run pylint nsg_checker --disable="C,W,R"
         
-    - name: Test with pytest 
-      run: |
-        pipenv run pytest tests/ --cov nsg_checker --cov-report term-missing --cov-report xml
+#     - name: Test with pytest 
+#       run: |
+#         pipenv run pytest tests/ --cov nsg_checker --cov-report term-missing --cov-report xml
         
     - name: Codecov
       uses: codecov/codecov-action@v1.0.7
