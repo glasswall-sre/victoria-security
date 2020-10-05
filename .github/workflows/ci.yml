@@ -35,13 +35,13 @@ jobs:
 #       run: |
 #         pipenv run pytest tests/ --cov nsg_checker --cov-report term-missing --cov-report xml
         
-    - name: Codecov
-      uses: codecov/codecov-action@v1.0.7
-      with:
-        name: nsg_checker-upload
-        token: ${{ secrets.CODECOV_TOKEN }}       
-        file: /home/runner/work/azure-nsg-checker/azure-nsg-checker/coverage.xml               
-        fail_ci_if_error: true
+#     - name: Codecov
+#       uses: codecov/codecov-action@v1.0.7
+#       with:
+#         name: nsg_checker-upload
+#         token: ${{ secrets.CODECOV_TOKEN }}       
+#         file: /home/runner/work/azure-nsg-checker/azure-nsg-checker/coverage.xml               
+#         fail_ci_if_error: true
      
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.2
